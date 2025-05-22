@@ -68,5 +68,4 @@ def delete_product(request, product_id):
         conn.commit()
         cursor.close()
         conn.close()
-
         return JsonResponse({"status": "Product deleted"})

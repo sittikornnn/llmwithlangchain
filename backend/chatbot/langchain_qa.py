@@ -45,4 +45,3 @@ def get_answer(question):
     return {
         "result": result["result"],
         "source_rows": [doc.metadata.get("row", "unknown") for doc in result["source_documents"]]
-    }
