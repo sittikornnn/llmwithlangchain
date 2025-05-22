@@ -13,3 +13,12 @@ https://github.com/user-attachments/assets/4169c646-bfc8-4c54-8447-c55f0e23cb22
 - react.js ใช้สำหรับพัฒนาเว็ปไซต์ ในส่วนของ frontend
 - django ใช้สำหรับประมวลต่างๆ ในส่วนของ backend
 - postman ใช้สำหรับตรวจตอบการทำงาน api จาก code python ใน django
+
+## information in database
+only product table in this project
+
+Ex. data in database
+| id | name | price |
+| :-- | :-: | :-: |
+| 1	| vivo V50 Lite | 10000 |
+| 2	| iPhone 16 Pro Max | 48901 |
