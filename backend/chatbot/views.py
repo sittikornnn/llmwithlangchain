@@ -13,6 +13,7 @@ def chat(request):
             return JsonResponse({'error': 'No question provided'}, status=400)
         
         result = get_answer(question)
-        return JsonResponse(result)
+
+        return JsonResponse({'answer': result})
     
     return JsonResponse({'message': 'Send a POST request with a question'})

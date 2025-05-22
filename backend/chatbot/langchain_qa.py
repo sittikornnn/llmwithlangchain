@@ -25,15 +25,22 @@ def get_data():
     conn.close()
     return data
 
-# Pre-load data
-data = get_data()
-docs = [Document(page_content="\n".join([f"{k}: {v}" for k, v in row.items()]), metadata={"row": idx}) for idx, row in enumerate(data)]
-split_docs = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50).split_documents(docs)
-vectorstore = FAISS.from_documents(split_docs, HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2"))
-llm = Ollama(model="llama3.2:3b")
-qa_chain = RetrievalQA.from_chain_type(llm=llm, retriever=vectorstore.as_retriever(), return_source_documents=True)
-
 def get_answer(question):
+    # Pre-load data
+    data = get_data()
+    docs = []
+    for idx, row in enumerate(data):
+        renamed_row = {
+            "ชื่อโทรศัพท์มือถือ": row["name"],
+            "ราคา": row["price"]
+        }
+        page_content = "\n".join([f"{k}: {v}" for k, v in renamed_row.items()])
+        docs.append(Document(page_content=page_content, metadata={"row": idx}))
+
+    split_docs = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50).split_documents(docs)
+    vectorstore = FAISS.from_documents(split_docs, HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2"))
+    llm = Ollama(model="llama3.2:3b")
+    qa_chain = RetrievalQA.from_chain_type(llm=llm, retriever=vectorstore.as_retriever(), return_source_documents=True)
     result = qa_chain(question)
     return {
         "result": result["result"],
